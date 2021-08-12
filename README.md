@@ -149,6 +149,40 @@
   - Just one critical operation, no need for rollback
   - No data duplication
 ---
----
+
 ### Conclusion
 To keep the system as simple and efficient as possible, without duplicating data, I will implement the second approach. Modern databases already try to solve the problems of efficiency or atomicity that this approach entails.
+
+---
+# Architecture
+I will follow a hexagonal architecture in order to keep the code simple but still maintainable, isolated, independant from external services and easily testable
+## Domain
+- ***Entities***
+  - `Account`
+    - `id: int`
+    - `balance: long`
+    - `applyIncome(amount: long) : void`
+    - `applyExpense(amount: long) : void`
+    - `canSendMoney(amount: long) : boolean`
+  - `Transfer`
+    - `beneficiary: int`
+    - `sender: int`
+    - `amount: long`
+- ***Domain Service***
+  - `TransferDomainService`
+    - `applyTransfer(sender: Account, beneficiary: Account, amount: long) : void`
+- ***Repositories***
+  - `IAccountRepository`
+    - `findById(accountId: int) : Account`
+    - `updateBalanceById(accountId: int, newBalance: long) : Account`
+    - `getTransfersHistory(accountId: int) : Transfer[]`
+  - `ITransferRepository`
+    - `saveTransfer(senderId: int, beneficiaryId: int, amount: long) : Transfer`
+- ***Exceptions***
+  - `AccountNotFound`
+  - `NotEnoughBalance`
+
+## Application
+- ***TransferAplicationService***
+  - `applyTransfer(senderId: int, beneficiaryId: int, amount: long) : void`
+  - `getTransfersHistory(accountId: int) : Transfer[]`
