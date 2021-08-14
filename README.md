@@ -163,19 +163,21 @@ I will follow a hexagonal architecture in order to keep the code simple but stil
     - `balance: number`
     - `applyIncome(amount: number) : void`
     - `applyExpense(amount: number) : void`
-    - `canSendMoney(amount: number) : boolean`
+    - `hasEnoughBalance(expenseAmount: number) : boolean`
   - `Transfer`
+    - `id: number`
     - `beneficiary: Account`
     - `sender: Account`
     - `amount: number`
     - `apply() : void`
 - ***Repositories***
   - `IAccountRepository`
-    - `findById(accountId: number) : Account`
-    - `updateBalanceById(accountId: number, newBalance: number) : Account`
+    - `findAccountById(accountId: number) : Promise<Account>`
+    - `updateBalance(accountId: number, newBalance: number) : Promise<Account>`
   - `ITransferRepository`
-    - `saveTransfer(senderId: number, beneficiaryId: number, amount: number) : Transfer`
-    - `getTransfersHistory(accountId: number) : Transfer[]`
+    - `accountRepository: IAccountRepository`
+    - `saveTransfer(senderId: number, beneficiaryId: number, amount: number) : Promise<Transfer>`
+    - `getTransfersHistory(accountId: number) : Promise<Transfer[]>`
 - ***Exceptions***
   - `AccountNotFound`
   - `NotEnoughBalance`
@@ -185,6 +187,8 @@ I will follow a hexagonal architecture in order to keep the code simple but stil
 ## Application
 - ***Services***
   - `TransferApplicationService`
+    - `accountRepository: IAccountRepository`
+    - `transferRepository: IAccountRepository`
     - `applyTransfer(senderId: number, beneficiaryId: number, amount: number) : void`
     - `getTransfersHistory(accountId: number) : Transfer[]`
 

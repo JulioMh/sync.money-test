@@ -1,11 +1,13 @@
 import { Account } from "../../Account/Domain/Account";
 
 export class Transfer {
+  private _id: number
   private _sender: Account
   private _beneficiary: Account
   private _amount: number
 
-  constructor(sender: Account, beneficiary: Account, amount: number) {
+  constructor(id: number, sender: Account, beneficiary: Account, amount: number) {
+    this._id = id
     this._amount = amount
     this._beneficiary = beneficiary
     this._sender = sender
