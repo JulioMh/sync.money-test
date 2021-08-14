@@ -3,6 +3,7 @@ import { Account } from '../../../src/Account/Domain/Account'
 import { Transfer } from '../../../src/Transfer/Domain/Transfer'
 import { TransferService } from '../../../src/Transfer/Application/TransferService'
 import { IAccountRepository } from '../../../src/Account/Domain/IAccountRepository'
+import { EntityNotFound } from '../../../lib/EntityNotFound'
 
 const sender = new Account(1, 10)
 const beneficiary = new Account(2, 10)
@@ -12,6 +13,7 @@ const AccountRepositoryMock = jest.fn<IAccountRepository, []>(() => ({
   findAccountById: jest.fn(async (id) : Promise<Account> => {
     if(id === 1) return Promise.resolve(sender)
     else if (id === 2 ) return Promise.resolve(beneficiary)
+    throw new EntityNotFound('Entity does not exist')
   }),
   updateBalance: jest.fn()
 }));

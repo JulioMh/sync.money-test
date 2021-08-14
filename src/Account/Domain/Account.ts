@@ -1,10 +1,16 @@
+import { InvalidAccountProperties } from "./Exceptions/InvalidAccountProperties"
+import { NotEnoughBalance } from "./Exceptions/NotEnoughBalance"
+
 export class Account {
   private _balance: number
   private _id: number
   
   constructor(id: number, balance: number) {
+    if(balance < 0) {
+      throw new InvalidAccountProperties('Balance must be equals or higher than 0')
+    }
     this._id = id
-    this._balance = balance | 0
+    this._balance = balance
   }
 
   get balance(): number {
@@ -16,14 +22,16 @@ export class Account {
   }
 
   hasEnoughBalance(expenseAmount: number) : boolean {
-    throw new Error('Method not implemented.');
+    return expenseAmount <= this._balance
   }
 
   applyIncome(incomeAmount: number) : void {
-    throw new Error('Method not implemented.');
+    this._balance += incomeAmount
   }
 
   applyExpense(expenseAmount: number) : void {
-    throw new Error('Method not implemented.');
+    if(!this.hasEnoughBalance(expenseAmount)) 
+      throw new NotEnoughBalance('Account can not afford the expense')
+    this._balance -= expenseAmount
   }
 }
