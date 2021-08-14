@@ -159,37 +159,37 @@ I will follow a hexagonal architecture in order to keep the code simple but stil
 ## Domain
 - ***Entities***
   - `Account`
-    - `id: int`
-    - `balance: long`
-    - `applyIncome(amount: long) : void`
-    - `applyExpense(amount: long) : void`
-    - `canSendMoney(amount: long) : boolean`
+    - `id: number`
+    - `balance: number`
+    - `applyIncome(amount: number) : void`
+    - `applyExpense(amount: number) : void`
+    - `canSendMoney(amount: number) : boolean`
   - `Transfer`
-    - `beneficiary: int`
-    - `sender: int`
-    - `amount: long`
-- ***Domain Service***
-  - `TransferDomainService`
-    - `applyTransfer(sender: Account, beneficiary: Account, amount: long) : void`
+    - `beneficiary: Account`
+    - `sender: Account`
+    - `amount: number`
+    - `apply() : void`
 - ***Repositories***
   - `IAccountRepository`
-    - `findById(accountId: int) : Object`
-    - `updateBalanceById(accountId: int, newBalance: long) : Object`
-    - `getTransfersHistory(accountId: int) : Object[]`
+    - `findById(accountId: number) : Account`
+    - `updateBalanceById(accountId: number, newBalance: number) : Account`
   - `ITransferRepository`
-    - `saveTransfer(senderId: int, beneficiaryId: int, amount: long) : Object`
+    - `saveTransfer(senderId: number, beneficiaryId: number, amount: number) : Transfer`
+    - `getTransfersHistory(accountId: number) : Transfer[]`
 - ***Exceptions***
   - `AccountNotFound`
   - `NotEnoughBalance`
+  - `InvalidAccountProperties`
+  - `InvalidTransferProperties`
 
 ## Application
 - ***Services***
   - `TransferApplicationService`
-    - `applyTransfer(senderId: int, beneficiaryId: int, amount: long) : void`
-    - `getTransfersHistory(accountId: int) : Transfer[]`
+    - `applyTransfer(senderId: number, beneficiaryId: number, amount: number) : void`
+    - `getTransfersHistory(accountId: number) : Transfer[]`
 
 ## Infrastructure
 - ***Controllers***
   - `TransferController`
-    - `applyTransfer(req: HttpRequest, res: HttpResponse, next: func)`
-    - `getTransferHistory(req, res, next)`
+    - `applyTransfer(req: HttpRequest, res: HttpResponse, next: method)`
+    - `getTransferHistory(req: HttpRequest, res: HttpResponse, next: method)`
