@@ -166,10 +166,11 @@ I will follow a hexagonal architecture in order to keep the code simple but stil
     - `hasEnoughBalance(expenseAmount: number) : boolean`
   - `Transfer`
     - `id: number`
-    - `beneficiary: Account`
-    - `sender: Account`
+    - `beneficiaryId: number`
+    - `senderId: number`
     - `amount: number`
-    - `apply() : void`
+  - `TransferDomainService`
+    - `applyTransfer(sender: Account, beneficiary: Account, amount: number): void`
 - ***Repositories***
   - `IAccountRepository`
     - `findAccountById(accountId: number) : Promise<Account>`

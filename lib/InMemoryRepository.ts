@@ -1,5 +1,10 @@
 import { EntityNotFound } from './EntityNotFound'
 
+interface QueryParam {
+  key: string;
+  value: any;
+}
+
 export class InMemoryRepository {
 
   private _repo: Array<any>;
@@ -14,13 +19,23 @@ export class InMemoryRepository {
     return Promise.resolve(item);
   }
 
-  async getAll(): Promise<Array<any>> {
-    return Promise.resolve(this._repo);
+  async findBy(...queries: QueryParam[]): Promise<Array<any>> {
+    const items = this._repo.reduce((allMatches, item) => {
+      let matches = []
+      for(let query of queries) {
+        if(item[query.key] === query.value){
+          matches.push(item)
+        }
+      }
+      return [...allMatches, ...matches]
+    }, []);
+
+    return items;
   }
 
   async save(item: any): Promise<number> {
     if (item.id) throw new Error(`Id will be generated`)
-    const latestId = this._repo.reduce((acc, id) => id > acc ? id : acc, 0)
+    const latestId = this._repo.reduce((acc, item) => item.id > acc ? item.id : acc, 0)
     const newId = latestId + 1
     const itemWithId = {
       id: newId,

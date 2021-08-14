@@ -1,7 +1,8 @@
 import { ITransferRepository } from '../../../src/Transfer/Domain/ITransferRepository'
 import { Account } from '../../../src/Account/Domain/Account'
 import { Transfer } from '../../../src/Transfer/Domain/Transfer'
-import { TransferService } from '../../../src/Transfer/Application/TransferService'
+import { TransferApplicationService } from '../../../src/Transfer/Application/TransferApplicationService'
+import { TransferDomainService } from '../../../src/Transfer/Domain/TransferDomainService'
 import { IAccountRepository } from '../../../src/Account/Domain/IAccountRepository'
 import { EntityNotFound } from '../../../lib/EntityNotFound'
 
@@ -20,23 +21,29 @@ const AccountRepositoryMock = jest.fn<IAccountRepository, []>(() => ({
 
 const TransferRepositoryMock = jest.fn<ITransferRepository, [IAccountRepository]>(() => ({
   saveTransfer: jest.fn(),
-  getTransferHistory: jest.fn(async (id) : Promise<Transfer[]> => Promise.resolve([new Transfer(1, sender, beneficiary, transferAmount)]))
+  getTransferHistory: jest.fn(async () : Promise<Transfer[]> => 
+    Promise.resolve([new Transfer(1, sender.id, beneficiary.id, transferAmount)])
+  )
 }));
+
+TransferDomainService.applyTransfer = jest.fn(TransferDomainService.applyTransfer)
 
 const accountRepositoryMock = new AccountRepositoryMock()
 const transferRepositoryMock = new TransferRepositoryMock(accountRepositoryMock)
-const transferService = new TransferService(transferRepositoryMock, accountRepositoryMock)
 
-test('should apply a transfer', async () => {
-  await transferService.applyTransfer(sender.id, beneficiary.id, transferAmount)
+const transferApplicationService = new TransferApplicationService(transferRepositoryMock, accountRepositoryMock)
+
+test('should orchestrate a transfer', async () => {
+  await transferApplicationService.applyTransfer(sender.id, beneficiary.id, transferAmount)
   expect(accountRepositoryMock.findAccountById).toHaveBeenCalledWith(sender.id)
   expect(accountRepositoryMock.findAccountById).toHaveBeenCalledWith(beneficiary.id)
+  expect(TransferDomainService.applyTransfer).toHaveBeenCalledWith(sender, beneficiary, transferAmount)
   expect(transferRepositoryMock.saveTransfer).toHaveBeenCalledWith(sender.id, beneficiary.id, transferAmount)
   expect(accountRepositoryMock.updateBalance).toHaveBeenCalledWith(sender.id, 5)
   expect(accountRepositoryMock.updateBalance).toHaveBeenCalledWith(beneficiary.id, 15)
 })
 
-test('should find transfer history', async () => {
-  await transferService.getTransferHistory(sender.id)
+test('should orchestrate an history search', async () => {
+  await transferApplicationService.getTransferHistory(sender.id)
   expect(transferRepositoryMock.getTransferHistory).toHaveBeenCalledWith(sender.id)
 })

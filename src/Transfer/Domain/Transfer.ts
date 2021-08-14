@@ -1,30 +1,36 @@
-import { Account } from "../../Account/Domain/Account";
+import { InvalidTransferProperties } from "./InvalidTransferProperties";
 
 export class Transfer {
   private _id: number
-  private _sender: Account
-  private _beneficiary: Account
+  private _senderId: number
+  private _beneficiaryId: number
   private _amount: number
 
-  constructor(id: number, sender: Account, beneficiary: Account, amount: number) {
+
+  constructor(id: number, senderId: number, beneficiaryId: number, amount: number) {
+    if(senderId === beneficiaryId)
+      throw new InvalidTransferProperties('One account can not transfer money to itself')
+    if(amount <= 0) 
+      throw new InvalidTransferProperties('Transfer amount must be higher than 0')
     this._id = id
     this._amount = amount
-    this._beneficiary = beneficiary
-    this._sender = sender
+    this._senderId = senderId
+    this._beneficiaryId = beneficiaryId
   }
 
-  get sender() : Account {
-    return this._sender
+  get id() : number {
+    return this._id
+  }
+
+  get senderId() : number {
+    return this._senderId
   }
   
-  get beneficiary() : Account {
-    return this._beneficiary
+  get beneficiaryId() : number {
+    return this._beneficiaryId
   }
 
   get amount() : number {
     return this._amount
-  }
-  apply() : void {
-    throw new Error('Method not implemented.');
   }
 }
