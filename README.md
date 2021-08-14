@@ -153,9 +153,9 @@
 ### Conclusion
 To keep the system as simple and efficient as possible, without duplicating data, I will implement the second approach. Modern databases already try to solve the problems of efficiency or atomicity that this approach entails.
 
----
 # Architecture
 I will follow a hexagonal architecture in order to keep the code simple but still maintainable, isolated, independant from external services and easily testable
+
 ## Domain
 - ***Entities***
   - `Account`
@@ -173,16 +173,23 @@ I will follow a hexagonal architecture in order to keep the code simple but stil
     - `applyTransfer(sender: Account, beneficiary: Account, amount: long) : void`
 - ***Repositories***
   - `IAccountRepository`
-    - `findById(accountId: int) : Account`
-    - `updateBalanceById(accountId: int, newBalance: long) : Account`
-    - `getTransfersHistory(accountId: int) : Transfer[]`
+    - `findById(accountId: int) : Object`
+    - `updateBalanceById(accountId: int, newBalance: long) : Object`
+    - `getTransfersHistory(accountId: int) : Object[]`
   - `ITransferRepository`
-    - `saveTransfer(senderId: int, beneficiaryId: int, amount: long) : Transfer`
+    - `saveTransfer(senderId: int, beneficiaryId: int, amount: long) : Object`
 - ***Exceptions***
   - `AccountNotFound`
   - `NotEnoughBalance`
 
 ## Application
-- ***TransferAplicationService***
-  - `applyTransfer(senderId: int, beneficiaryId: int, amount: long) : void`
-  - `getTransfersHistory(accountId: int) : Transfer[]`
+- ***Services***
+  - `TransferApplicationService`
+    - `applyTransfer(senderId: int, beneficiaryId: int, amount: long) : void`
+    - `getTransfersHistory(accountId: int) : Transfer[]`
+
+## Infrastructure
+- ***Controllers***
+  - `TransferController`
+    - `applyTransfer(req: HttpRequest, res: HttpResponse, next: func)`
+    - `getTransferHistory(req, res, next)`
