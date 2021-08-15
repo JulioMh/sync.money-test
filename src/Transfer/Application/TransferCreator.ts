@@ -15,20 +15,12 @@ export class TransferCreator {
     this._accountRepository = accountRepository;
   }
 
-  async createTransfer(
-    senderId: number,
-    beneficiaryId: number,
-    amount: number
-  ): Promise<Transfer> {
+  async createTransfer(transfer: Omit<Transfer, "id">): Promise<Transfer> {
+    const { senderId, beneficiaryId, amount } = transfer
     const sender = await this._accountRepository.findAccountById(senderId);
     const beneficiary = await this._accountRepository.findAccountById(
       beneficiaryId
     );
-    const transfer: Omit<Transfer, "id"> = {
-      senderId: sender.id,
-      beneficiaryId: beneficiary.id,
-      amount,
-    };
     TransferApplier.applyTransfer(sender, beneficiary, amount);
     await this._accountRepository.updateAccount(sender);
     await this._accountRepository.updateAccount(beneficiary);

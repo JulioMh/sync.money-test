@@ -3,6 +3,7 @@ import { Account } from "../../../src/Account/Domain/Account";
 import { IAccountRepository } from "../../../src/Account/Domain/IAccountRepository";
 import { TransferCreator } from "../../../src/Transfer/Application/TransferCreator";
 import { ITransferRepository } from "../../../src/Transfer/Domain/ITransferRepository";
+import { Transfer } from "../../../src/Transfer/Domain/Transfer";
 import { TransferApplier } from "../../../src/Transfer/Domain/TransferApplier";
 
 const sender = new Account(1, 10);
@@ -41,11 +42,12 @@ const transferCreator = new TransferCreator(
 );
 
 test("should orchestrate a transfer", async () => {
-  await transferCreator.createTransfer(
-    sender.id,
-    beneficiary.id,
-    transferAmount
-  );
+  const incomingTransfer : Omit<Transfer, "id"> = {
+    senderId: sender.id,
+    beneficiaryId: beneficiary.id,
+    amount: transferAmount
+  }
+  await transferCreator.createTransfer(incomingTransfer);
   expect(accountRepositoryMock.findAccountById).toHaveBeenCalledWith(sender.id);
   expect(accountRepositoryMock.findAccountById).toHaveBeenCalledWith(
     beneficiary.id
