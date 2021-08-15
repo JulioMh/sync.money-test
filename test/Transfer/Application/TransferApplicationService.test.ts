@@ -38,9 +38,13 @@ test('should orchestrate a transfer', async () => {
   expect(accountRepositoryMock.findAccountById).toHaveBeenCalledWith(sender.id)
   expect(accountRepositoryMock.findAccountById).toHaveBeenCalledWith(beneficiary.id)
   expect(TransferDomainService.applyTransfer).toHaveBeenCalledWith(sender, beneficiary, transferAmount)
-  expect(transferRepositoryMock.saveTransfer).toHaveBeenCalledWith(sender.id, beneficiary.id, transferAmount)
-  expect(accountRepositoryMock.updateBalance).toHaveBeenCalledWith(sender.id, 5)
-  expect(accountRepositoryMock.updateBalance).toHaveBeenCalledWith(beneficiary.id, 15)
+  expect(transferRepositoryMock.saveTransfer).toHaveBeenCalledWith({
+    senderId: sender.id, 
+    beneficiaryId: beneficiary.id,
+    amount: transferAmount
+  })
+  expect(accountRepositoryMock.updateBalance).toHaveBeenCalledWith(new Account(sender.id, 5))
+  expect(accountRepositoryMock.updateBalance).toHaveBeenCalledWith(new Account(beneficiary.id, 15))
 })
 
 test('should orchestrate an history search', async () => {

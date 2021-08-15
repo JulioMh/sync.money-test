@@ -20,7 +20,7 @@ test('should return the account', async () => {
 test('should update balance account', async () => {
   const expectedAccount = new Account(1, 10)
   const accountId = await accountRepository.save({ balance: 12 })
-  const account = await accountRepository.updateBalance(accountId, 10)
+  const account = await accountRepository.updateBalance(new Account(accountId, 10))
 
   const foundAccount = await accountRepository.findById(account.id)
   expect(new Account(foundAccount.id, foundAccount.balance)).toEqual(expectedAccount)
@@ -31,6 +31,6 @@ test('should throw error if does not find the account', async () => {
 })
 
 test('should throw error if does not find the account to update', async () => {
-   expect(async () => await accountRepository.updateBalance(1, 1)).rejects.toThrow(AccountNotFound)
+   expect(async () => await accountRepository.updateBalance(new Account(1, 1))).rejects.toThrow(AccountNotFound)
 })
 

@@ -16,13 +16,13 @@ export class TransferApplicationService {
   }
 
   async applyTransfer(senderId: number, beneficiaryId: number, amount: number): Promise<Transfer>{
-    // TODO: Should be working with entities
     const sender = await this._accountRepository.findAccountById(senderId)    
     const beneficiary = await this._accountRepository.findAccountById(beneficiaryId)
+    const transfer: Omit<Transfer, 'id'> = { senderId: sender.id, beneficiaryId: beneficiary.id, amount }
     TransferDomainService.applyTransfer(sender, beneficiary, amount)
-    await this._accountRepository.updateBalance(sender.id, sender.balance)
-    await this._accountRepository.updateBalance(beneficiary.id, beneficiary.balance)
-    return this._transferRepository.saveTransfer(sender.id, beneficiary.id, amount)
+    await this._accountRepository.updateBalance(sender)
+    await this._accountRepository.updateBalance(beneficiary)
+    return this._transferRepository.saveTransfer(transfer)
   }
 
   getTransferHistory(accountId: number) : Promise<Transfer[]> {

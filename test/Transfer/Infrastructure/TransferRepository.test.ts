@@ -2,7 +2,6 @@ import { TransferRepository } from '../../../src/Transfer/Infrastructure/Transfe
 import { IAccountRepository } from '../../../src/Account/Domain/IAccountRepository'
 import { Transfer } from '../../../src/Transfer/Domain/Transfer'
 import { Account } from '../../../src/Account/Domain/Account'
-import { EntityNotFound } from '../../../lib/EntityNotFound'
 import { AccountNotFound } from '../../../src/Account/Domain/Exceptions/AccountNotFound'
 
 var transferRepository: TransferRepository
@@ -39,13 +38,13 @@ test('should return list of transfer', async () => {
 
 test('should save a transfer', async () => {
   const expectedTransfer = new Transfer(1, sender.id, beneficiary.id, transferAmount)
-  const newTransfer = await transferRepository.saveTransfer(sender.id, beneficiary.id, transferAmount)
+  const newTransfer = await transferRepository.saveTransfer({ senderId: sender.id, beneficiaryId: beneficiary.id, amount: transferAmount})
 
   expect(newTransfer).toEqual(expectedTransfer)
 })
 
 test('should throw error if transfer participant does not exist', async () => {
-  expect(async () => await transferRepository.saveTransfer(3, beneficiary.id, transferAmount)).rejects.toThrow(AccountNotFound)
-  expect(async () => await transferRepository.saveTransfer(sender.id, 3, transferAmount)).rejects.toThrow(AccountNotFound)
+  expect(async () => await transferRepository.saveTransfer({senderId: 3, beneficiaryId: beneficiary.id, amount: transferAmount})).rejects.toThrow(AccountNotFound)
+  expect(async () => await transferRepository.saveTransfer({ senderId: sender.id, beneficiaryId: 3, amount: transferAmount})).rejects.toThrow(AccountNotFound)
 })
 
