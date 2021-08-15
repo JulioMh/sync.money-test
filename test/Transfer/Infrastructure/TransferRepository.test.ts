@@ -10,6 +10,13 @@ const sender = new Account(1, 10);
 const beneficiary = new Account(2, 10);
 const transferAmount = 5;
 
+const incomingTransfer = new Transfer(
+  undefined,
+  sender.id,
+  beneficiary.id,
+  transferAmount
+)
+
 const AccountRepositoryMock = jest.fn<IAccountRepository, []>(() => ({
   findAccountById: async (id): Promise<Account> => {
     if (id === 1) return Promise.resolve(sender);
@@ -39,15 +46,16 @@ test("should return list of transfer", async () => {
     sender.id,
     transferAmount
   );
+
   await transferRepository.save({
     senderId: sender.id,
     beneficiaryId: beneficiary.id,
-    amount: transferAmount,
+    amount: transferAmount
   });
   await transferRepository.save({
     senderId: beneficiary.id,
     beneficiaryId: sender.id,
-    amount: transferAmount,
+    amount: transferAmount
   });
 
   const transferHistory = await transferRepository.getTransferHistory(
@@ -65,11 +73,7 @@ test("should save a transfer", async () => {
     beneficiary.id,
     transferAmount
   );
-  const newTransfer = await transferRepository.saveTransfer({
-    senderId: sender.id,
-    beneficiaryId: beneficiary.id,
-    amount: transferAmount,
-  });
+  const newTransfer = await transferRepository.saveTransfer(incomingTransfer);
 
   expect(newTransfer).toEqual(expectedTransfer);
 });
@@ -77,19 +81,21 @@ test("should save a transfer", async () => {
 test("should throw error if transfer participant does not exist", async () => {
   expect(
     async () =>
-      await transferRepository.saveTransfer({
-        senderId: 3,
-        beneficiaryId: beneficiary.id,
-        amount: transferAmount,
-      })
+      await transferRepository.saveTransfer(new Transfer(
+        undefined,
+        3,
+        beneficiary.id,
+        transferAmount
+      ))
   ).rejects.toThrow(AccountNotFound);
   expect(
     async () =>
-      await transferRepository.saveTransfer({
-        senderId: sender.id,
-        beneficiaryId: 3,
-        amount: transferAmount,
-      })
+      await transferRepository.saveTransfer(new Transfer(
+        undefined,
+        sender.id,
+        3,
+        transferAmount
+      ))
   ).rejects.toThrow(AccountNotFound);
 });
 
@@ -98,11 +104,7 @@ test("shold throw error if something goes wrong saving transfer data", async () 
     throw new Error("Something failed");
   });
   expect(
-    transferRepository.saveTransfer({
-      senderId: sender.id,
-      beneficiaryId: beneficiary.id,
-      amount: transferAmount,
-    })
+    transferRepository.saveTransfer(incomingTransfer)
   ).rejects.toThrowError("Internal repository error");
 });
 

@@ -42,11 +42,12 @@ const transferCreator = new TransferCreator(
 );
 
 test("should orchestrate a transfer", async () => {
-  const incomingTransfer : Omit<Transfer, "id"> = {
-    senderId: sender.id,
-    beneficiaryId: beneficiary.id,
-    amount: transferAmount
-  }
+  const incomingTransfer : Transfer = new Transfer(
+    undefined,
+    sender.id,
+    beneficiary.id,
+    transferAmount
+  )
   await transferCreator.createTransfer(incomingTransfer);
   expect(accountRepositoryMock.findAccountById).toHaveBeenCalledWith(sender.id);
   expect(accountRepositoryMock.findAccountById).toHaveBeenCalledWith(
@@ -57,11 +58,7 @@ test("should orchestrate a transfer", async () => {
     beneficiary,
     transferAmount
   );
-  expect(transferRepositoryMock.saveTransfer).toHaveBeenCalledWith({
-    senderId: sender.id,
-    beneficiaryId: beneficiary.id,
-    amount: transferAmount,
-  });
+  expect(transferRepositoryMock.saveTransfer).toHaveBeenCalledWith(incomingTransfer);
   expect(accountRepositoryMock.updateAccount).toHaveBeenCalledWith(
     new Account(sender.id, 5)
   );

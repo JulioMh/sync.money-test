@@ -3,7 +3,11 @@ import { ITransferRepository } from "../Domain/ITransferRepository";
 import { Transfer } from "../Domain/Transfer";
 import { TransferApplier } from "../Domain/TransferApplier";
 
-export class TransferCreator {
+export interface ITransferCreator {
+  createTransfer(transfer: Transfer): Promise<Transfer>
+}
+
+export class TransferCreator implements ITransferCreator {
   private _transferRepository: ITransferRepository;
   private _accountRepository: IAccountRepository;
 
@@ -15,7 +19,7 @@ export class TransferCreator {
     this._accountRepository = accountRepository;
   }
 
-  async createTransfer(transfer: Omit<Transfer, "id">): Promise<Transfer> {
+  async createTransfer(transfer: Transfer): Promise<Transfer> {
     const { senderId, beneficiaryId, amount } = transfer
     const sender = await this._accountRepository.findAccountById(senderId);
     const beneficiary = await this._accountRepository.findAccountById(

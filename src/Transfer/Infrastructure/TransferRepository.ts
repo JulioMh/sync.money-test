@@ -34,7 +34,7 @@ export class TransferRepository
     }
   }
 
-  async saveTransfer(transfer: Omit<Transfer, "id">): Promise<Transfer> {
+  async saveTransfer(transfer: Transfer): Promise<Transfer> {
     const { senderId, beneficiaryId, amount } = transfer;
     await this._accountRepository.findAccountById(senderId);
     await this._accountRepository.findAccountById(beneficiaryId);

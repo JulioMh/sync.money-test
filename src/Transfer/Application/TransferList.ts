@@ -1,7 +1,11 @@
 import { ITransferRepository } from "../Domain/ITransferRepository";
 import { Transfer } from "../Domain/Transfer";
 
-export class TransferList {
+export interface ITransferList {
+  getTransferHistory(accountId: number): Promise<Transfer[]>
+}
+
+export class TransferList implements ITransferList {
   private _transferRepository: ITransferRepository;
 
   constructor(
