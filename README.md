@@ -161,11 +161,12 @@ I will follow a hexagonal architecture in order to keep the code simple but stil
   - `Account`
     - `id: number`
     - `balance: number`
+    - `transfers?: Transfer[]`
     - `applyIncome(amount: number) : void`
     - `applyExpense(amount: number) : void`
     - `hasEnoughBalance(expenseAmount: number) : boolean`
   - `Transfer`
-    - `id: number`
+    - `id?: number`
     - `beneficiaryId: number`
     - `senderId: number`
     - `amount: number`
@@ -174,6 +175,7 @@ I will follow a hexagonal architecture in order to keep the code simple but stil
 - ***Repositories***
   - `IAccountRepository`
     - `findAccountById(accountId: number) : Promise<Account>`
+    - `findAccountWithTransactionsById(accountId: number): Promise<Account>`
     - `updateAccount(accountId: number, newBalance: number) : Promise<Account>`
   - `ITransferRepository`
     - `accountRepository: IAccountRepository`
@@ -188,16 +190,15 @@ I will follow a hexagonal architecture in order to keep the code simple but stil
 ## Application
 - ***Services***
   - `TransferCreator`
-    - `accountRepository: IAccountRepository`
-    - `transferRepository: IAccountRepository`
+    - `transferRepository: ITransferRepository`
     - `applyTransfer(senderId: number, beneficiaryId: number, amount: number) : void`
-  - `TransferList`
-    - `transferRepository: IAccountRepository`
-    - `getTransfersHistory(accountId: number) : Transfer[]`
+  - `AccountList`
+    - `accountRepository: IAccountRepository`
+    - `findAccount(accountId: number) : Transfer[]`
 
 ## Infrastructure
 - ***Controllers***
-  - `CreateTransferController`
-    - `createTransfer(Omit<Transfer, "id"> transfer) : Transfer`
-  - `ListTransferController`
-    - `getTransferHistory(accountId: number) : Transfer[]`
+  - `TransferPostController`
+    - `run(req: Request, res: Response) : Promise<void>`
+  - `AccountGetController`
+    - `run(req: Request, res: Response) : Promise<void>`
