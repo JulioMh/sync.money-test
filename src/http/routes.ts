@@ -1,9 +1,14 @@
-import { Router, Request, Response } from "express"
-import { Container } from "../Container"
+import { Request, Response, Router } from "express";
 
-export const registerRoutes = (router: Router) => { 
-  const container: Container = Container.getContainer()
+import { Container } from "../Container";
 
-  router.post('/transfers', (req: Request, res: Response) => container.transferPostController.run(req, res))
-  router.get('/accounts/:id', (req: Request, res: Response) => container.accountGetController.run(req, res))
-}
+export const registerRoutes = (router: Router) : void => {
+  const container: Container = Container.getContainer();
+
+  router.post("/transfers", (req: Request, res: Response) =>
+    container.transferPostController.run(req, res)
+  );
+  router.get("/accounts/:id", (req: Request, res: Response) =>
+    container.accountGetController.run(req, res)
+  );
+};

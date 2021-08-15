@@ -5,7 +5,7 @@ import { NotEnoughBalance } from "./Exceptions/NotEnoughBalance";
 export class Account {
   private _balance: number;
   private _id: number;
-  private _transfers?: Transfer[]
+  private _transfers?: Transfer[];
 
   constructor(id: number, balance: number, transfers?: Transfer[]) {
     if (balance < 0) {

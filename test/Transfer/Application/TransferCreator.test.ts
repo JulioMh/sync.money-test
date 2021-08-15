@@ -17,7 +17,7 @@ const AccountRepositoryMock = jest.fn<IAccountRepository, []>(() => ({
     throw new EntityNotFound("Entity does not exist");
   }),
   updateAccount: jest.fn(),
-  findAccountWithTransactionsById: jest.fn()
+  findAccountWithTransactionsById: jest.fn(),
 }));
 
 const TransferRepositoryMock = jest.fn<
@@ -28,9 +28,7 @@ const TransferRepositoryMock = jest.fn<
   getTransferHistory: jest.fn(),
 }));
 
-TransferApplier.applyTransfer = jest.fn(
-  TransferApplier.applyTransfer
-);
+TransferApplier.applyTransfer = jest.fn(TransferApplier.applyTransfer);
 
 const accountRepositoryMock = new AccountRepositoryMock();
 const transferRepositoryMock = new TransferRepositoryMock(
@@ -43,12 +41,12 @@ const transferCreator = new TransferCreator(
 );
 
 test("should orchestrate a transfer", async () => {
-  const incomingTransfer : Transfer = new Transfer(
+  const incomingTransfer: Transfer = new Transfer(
     undefined,
     sender.id,
     beneficiary.id,
     transferAmount
-  )
+  );
   await transferCreator.createTransfer(incomingTransfer);
   expect(accountRepositoryMock.findAccountById).toHaveBeenCalledWith(sender.id);
   expect(accountRepositoryMock.findAccountById).toHaveBeenCalledWith(
@@ -59,7 +57,9 @@ test("should orchestrate a transfer", async () => {
     beneficiary,
     transferAmount
   );
-  expect(transferRepositoryMock.saveTransfer).toHaveBeenCalledWith(incomingTransfer);
+  expect(transferRepositoryMock.saveTransfer).toHaveBeenCalledWith(
+    incomingTransfer
+  );
   expect(accountRepositoryMock.updateAccount).toHaveBeenCalledWith(
     new Account(sender.id, 5)
   );
@@ -67,4 +67,3 @@ test("should orchestrate a transfer", async () => {
     new Account(beneficiary.id, 15)
   );
 });
-

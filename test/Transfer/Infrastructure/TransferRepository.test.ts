@@ -1,6 +1,4 @@
 import { Account } from "../../../src/Account/Domain/Account";
-import { AccountNotFound } from "../../../src/Account/Domain/Exceptions/AccountNotFound";
-import { IAccountRepository } from "../../../src/Account/Domain/IAccountRepository";
 import { Transfer } from "../../../src/Transfer/Domain/Transfer";
 import { TransferRepository } from "../../../src/Transfer/Infrastructure/TransferRepository";
 
@@ -15,7 +13,7 @@ const incomingTransfer = new Transfer(
   sender.id,
   beneficiary.id,
   transferAmount
-)
+);
 
 beforeEach(() => {
   // This will wipe out data from previous test
@@ -39,12 +37,12 @@ test("should return list of transfer", async () => {
   await transferRepository.save({
     senderId: sender.id,
     beneficiaryId: beneficiary.id,
-    amount: transferAmount
+    amount: transferAmount,
   });
   await transferRepository.save({
     senderId: beneficiary.id,
     beneficiaryId: sender.id,
-    amount: transferAmount
+    amount: transferAmount,
   });
 
   const transferHistory = await transferRepository.getTransferHistory(

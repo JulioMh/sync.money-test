@@ -6,15 +6,15 @@ export class Transfer {
   private _beneficiaryId: number;
   private _amount: number;
 
-  constructor(id?: number, senderId?: number, beneficiaryId?: number, amount?: number) {
-    if (!senderId)
-      throw new InvalidTransferProperties(
-        "Sender ID is missing"
-      );
+  constructor(
+    id?: number,
+    senderId?: number,
+    beneficiaryId?: number,
+    amount?: number
+  ) {
+    if (!senderId) throw new InvalidTransferProperties("Sender ID is missing");
     if (!beneficiaryId)
-      throw new InvalidTransferProperties(
-        "Beneficiary ID is missing"
-      );
+      throw new InvalidTransferProperties("Beneficiary ID is missing");
     if (senderId === beneficiaryId)
       throw new InvalidTransferProperties(
         "One account can not transfer money to itself"

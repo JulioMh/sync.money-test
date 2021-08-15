@@ -6,16 +6,13 @@ import { Transfer } from "../../../src/Transfer/Domain/Transfer";
 
 let accountRepository: AccountRepository;
 
-const transferHistory = [
-  new Transfer(1, 1, 2, 6),
-  new Transfer(2, 2, 1, 6)
-]
+const transferHistory = [new Transfer(1, 1, 2, 6), new Transfer(2, 2, 1, 6)];
 
 const TransferRepositoryMock = jest.fn<ITransferRepository, []>(() => ({
   getTransferHistory: () => Promise.resolve(transferHistory),
-  saveTransfer: jest.fn()
-}))
-const transferRepositoryMock = new TransferRepositoryMock()
+  saveTransfer: jest.fn(),
+}));
+const transferRepositoryMock = new TransferRepositoryMock();
 beforeEach(() => {
   // This will wipe out data from previous test
   accountRepository = new AccountRepository(transferRepositoryMock);
@@ -25,10 +22,11 @@ test("should return an account with his transfers", async () => {
   const expectedAccount = new Account(1, 12, transferHistory);
   const newAccountId = await accountRepository.save({ balance: 12 });
 
-  const foundAccount = await accountRepository.findAccountWithTransactionsById(newAccountId);
+  const foundAccount = await accountRepository.findAccountWithTransactionsById(
+    newAccountId
+  );
   expect(foundAccount).toEqual(expectedAccount);
 });
-
 
 test("should return the account", async () => {
   const expectedAccount = new Account(1, 12);
