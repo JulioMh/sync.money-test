@@ -1,10 +1,9 @@
 import { EntityNotFound } from "../../../lib/EntityNotFound";
 import { Account } from "../../../src/Account/Domain/Account";
 import { IAccountRepository } from "../../../src/Account/Domain/IAccountRepository";
-import { TransferApplicationService } from "../../../src/Transfer/Application/TransferApplicationService";
+import { TransferCreator } from "../../../src/Transfer/Application/TransferCreator";
 import { ITransferRepository } from "../../../src/Transfer/Domain/ITransferRepository";
-import { Transfer } from "../../../src/Transfer/Domain/Transfer";
-import { TransferDomainService } from "../../../src/Transfer/Domain/TransferDomainService";
+import { TransferApplier } from "../../../src/Transfer/Domain/TransferApplier";
 
 const sender = new Account(1, 10);
 const beneficiary = new Account(2, 10);
@@ -24,16 +23,11 @@ const TransferRepositoryMock = jest.fn<
   [IAccountRepository]
 >(() => ({
   saveTransfer: jest.fn(),
-  getTransferHistory: jest.fn(
-    async (): Promise<Transfer[]> =>
-      Promise.resolve([
-        new Transfer(1, sender.id, beneficiary.id, transferAmount),
-      ])
-  ),
+  getTransferHistory: jest.fn(),
 }));
 
-TransferDomainService.applyTransfer = jest.fn(
-  TransferDomainService.applyTransfer
+TransferApplier.applyTransfer = jest.fn(
+  TransferApplier.applyTransfer
 );
 
 const accountRepositoryMock = new AccountRepositoryMock();
@@ -41,13 +35,13 @@ const transferRepositoryMock = new TransferRepositoryMock(
   accountRepositoryMock
 );
 
-const transferApplicationService = new TransferApplicationService(
+const transferCreator = new TransferCreator(
   transferRepositoryMock,
   accountRepositoryMock
 );
 
 test("should orchestrate a transfer", async () => {
-  await transferApplicationService.applyTransfer(
+  await transferCreator.createTransfer(
     sender.id,
     beneficiary.id,
     transferAmount
@@ -56,7 +50,7 @@ test("should orchestrate a transfer", async () => {
   expect(accountRepositoryMock.findAccountById).toHaveBeenCalledWith(
     beneficiary.id
   );
-  expect(TransferDomainService.applyTransfer).toHaveBeenCalledWith(
+  expect(TransferApplier.applyTransfer).toHaveBeenCalledWith(
     sender,
     beneficiary,
     transferAmount
@@ -74,9 +68,3 @@ test("should orchestrate a transfer", async () => {
   );
 });
 
-test("should orchestrate an history search", async () => {
-  await transferApplicationService.getTransferHistory(sender.id);
-  expect(transferRepositoryMock.getTransferHistory).toHaveBeenCalledWith(
-    sender.id
-  );
-});

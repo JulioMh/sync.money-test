@@ -1,6 +1,6 @@
 import { Account } from "../../Account/Domain/Account";
 
-export class TransferDomainService {
+export class TransferApplier {
   static applyTransfer(
     sender: Account,
     beneficiary: Account,

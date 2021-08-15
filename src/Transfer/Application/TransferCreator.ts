@@ -1,9 +1,9 @@
 import { IAccountRepository } from "../../Account/Domain/IAccountRepository";
 import { ITransferRepository } from "../Domain/ITransferRepository";
 import { Transfer } from "../Domain/Transfer";
-import { TransferDomainService } from "../Domain/TransferDomainService";
+import { TransferApplier } from "../Domain/TransferApplier";
 
-export class TransferApplicationService {
+export class TransferCreator {
   private _transferRepository: ITransferRepository;
   private _accountRepository: IAccountRepository;
 
@@ -15,7 +15,7 @@ export class TransferApplicationService {
     this._accountRepository = accountRepository;
   }
 
-  async applyTransfer(
+  async createTransfer(
     senderId: number,
     beneficiaryId: number,
     amount: number
@@ -29,13 +29,9 @@ export class TransferApplicationService {
       beneficiaryId: beneficiary.id,
       amount,
     };
-    TransferDomainService.applyTransfer(sender, beneficiary, amount);
+    TransferApplier.applyTransfer(sender, beneficiary, amount);
     await this._accountRepository.updateAccount(sender);
     await this._accountRepository.updateAccount(beneficiary);
     return this._transferRepository.saveTransfer(transfer);
-  }
-
-  getTransferHistory(accountId: number): Promise<Transfer[]> {
-    return this._transferRepository.getTransferHistory(accountId);
   }
 }
