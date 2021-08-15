@@ -1,3 +1,3 @@
-test('mock', () => {
-  expect(true).toBeTruthy
-})
+test("mock", () => {
+  expect(true).toBeTruthy;
+});

@@ -1,4 +1,4 @@
-import { EntityNotFound } from './EntityNotFound'
+import { EntityNotFound } from "./EntityNotFound";
 
 interface QueryParam {
   key: string;
@@ -6,7 +6,6 @@ interface QueryParam {
 }
 
 export class InMemoryRepository {
-
   private _repo: Array<any>;
 
   constructor() {
@@ -14,56 +13,56 @@ export class InMemoryRepository {
   }
 
   async findById(id: number): Promise<any> {
-    const item = this._repo.find(item => item.id === id);
-    if(!item) throw new EntityNotFound(`Id: ${id} not found`)
+    const item = this._repo.find((item) => item.id === id);
+    if (!item) throw new EntityNotFound(`Id: ${id} not found`);
     return Promise.resolve(item);
   }
 
   async findBy(...queries: QueryParam[]): Promise<Array<any>> {
     const items = this._repo.reduce((allMatches, item) => {
-      let matches = []
-      for(let query of queries) {
-        if(item[query.key] === query.value){
-          matches.push(item)
+      const matches = [];
+      for (const query of queries) {
+        if (item[query.key] === query.value) {
+          matches.push(item);
         }
       }
-      return [...allMatches, ...matches]
+      return [...allMatches, ...matches];
     }, []);
 
     return items;
   }
 
   async save(item: any): Promise<number> {
-    if (item.id) throw new Error(`Id will be generated`)
-    const latestId = this._repo.reduce((acc, item) => item.id > acc ? item.id : acc, 0)
-    const newId = latestId + 1
+    if (item.id) throw new Error(`Id will be generated`);
+    const latestId = this._repo.reduce(
+      (acc, item) => (item.id > acc ? item.id : acc),
+      0
+    );
+    const newId = latestId + 1;
     const itemWithId = {
       id: newId,
-      ...item
-    }
-    
-    this._repo = [
-      ...this._repo,
-      itemWithId
-    ]
+      ...item,
+    };
 
-    return Promise.resolve(newId)
+    this._repo = [...this._repo, itemWithId];
+
+    return Promise.resolve(newId);
   }
 
   async update(item: any): Promise<any> {
-    const { id } = item
-    const index = this._repo.findIndex(item => item.id === id);
-    if(index === -1) throw new EntityNotFound(`Id: ${id} not found`)
+    const { id } = item;
+    const index = this._repo.findIndex((item) => item.id === id);
+    if (index === -1) throw new EntityNotFound(`Id: ${id} not found`);
     const editedItem = {
       ...this._repo[index],
-      ...item
-    }
+      ...item,
+    };
     this._repo = [
       ...this._repo.slice(0, index),
       editedItem,
-      ...this._repo.slice(index + 1)
+      ...this._repo.slice(index + 1),
     ];
-    
-    return Promise.resolve(editedItem)
+
+    return Promise.resolve(editedItem);
   }
 }

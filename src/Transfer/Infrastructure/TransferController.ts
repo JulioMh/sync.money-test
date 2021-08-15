@@ -1,3 +1,1 @@
-export class TransferController {
-  
-}
+export class TransferController {}
