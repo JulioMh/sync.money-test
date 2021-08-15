@@ -16,7 +16,7 @@ const AccountRepositoryMock = jest.fn<IAccountRepository, []>(() => ({
     if (id === 2) return Promise.resolve(beneficiary);
     throw new AccountNotFound("Entity does not exist");
   },
-  updateBalance: jest.fn(),
+  updateAccount: jest.fn(),
 }));
 
 const accountRepositoryMock = new AccountRepositoryMock();
@@ -91,4 +91,26 @@ test("should throw error if transfer participant does not exist", async () => {
         amount: transferAmount,
       })
   ).rejects.toThrow(AccountNotFound);
+});
+
+test("shold throw error if something goes wrong saving transfer data", async () => {
+  transferRepository.save = jest.fn(() => {
+    throw new Error("Something failed");
+  });
+  expect(
+    transferRepository.saveTransfer({
+      senderId: sender.id,
+      beneficiaryId: beneficiary.id,
+      amount: transferAmount,
+    })
+  ).rejects.toThrowError("Internal repository error");
+});
+
+test("shold throw error if something goes wrong finding history", async () => {
+  transferRepository.findBy = jest.fn(() => {
+    throw new Error("Something failed");
+  });
+  expect(transferRepository.getTransferHistory(1)).rejects.toThrowError(
+    "Internal repository error"
+  );
 });

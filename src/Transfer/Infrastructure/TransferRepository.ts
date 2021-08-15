@@ -15,19 +15,23 @@ export class TransferRepository
   }
 
   async getTransferHistory(accountId: number): Promise<Transfer[]> {
-    const objectHistory = await this.findBy(
-      { key: "senderId", value: accountId },
-      { key: "beneficiaryId", value: accountId }
-    );
-    return objectHistory.map(
-      (object) =>
-        new Transfer(
-          object.id,
-          object.senderId,
-          object.beneficiaryId,
-          object.amount
-        )
-    );
+    try {
+      const objectHistory = await this.findBy(
+        { key: "senderId", value: accountId },
+        { key: "beneficiaryId", value: accountId }
+      );
+      return objectHistory.map(
+        (object) =>
+          new Transfer(
+            object.id,
+            object.senderId,
+            object.beneficiaryId,
+            object.amount
+          )
+      );
+    } catch (error) {
+      throw new Error(`Internal repository error: ${error.message}`);
+    }
   }
 
   async saveTransfer(transfer: Omit<Transfer, "id">): Promise<Transfer> {
@@ -40,7 +44,7 @@ export class TransferRepository
         new Transfer(transferId, senderId, beneficiaryId, amount)
       );
     } catch (error) {
-      throw new Error("Internal repository error");
+      throw new Error(`Internal repository error: ${error.message}`);
     }
   }
 }

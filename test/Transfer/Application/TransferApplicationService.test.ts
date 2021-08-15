@@ -16,7 +16,7 @@ const AccountRepositoryMock = jest.fn<IAccountRepository, []>(() => ({
     else if (id === 2) return Promise.resolve(beneficiary);
     throw new EntityNotFound("Entity does not exist");
   }),
-  updateBalance: jest.fn(),
+  updateAccount: jest.fn(),
 }));
 
 const TransferRepositoryMock = jest.fn<
@@ -66,10 +66,10 @@ test("should orchestrate a transfer", async () => {
     beneficiaryId: beneficiary.id,
     amount: transferAmount,
   });
-  expect(accountRepositoryMock.updateBalance).toHaveBeenCalledWith(
+  expect(accountRepositoryMock.updateAccount).toHaveBeenCalledWith(
     new Account(sender.id, 5)
   );
-  expect(accountRepositoryMock.updateBalance).toHaveBeenCalledWith(
+  expect(accountRepositoryMock.updateAccount).toHaveBeenCalledWith(
     new Account(beneficiary.id, 15)
   );
 });

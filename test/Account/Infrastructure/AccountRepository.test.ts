@@ -20,7 +20,7 @@ test("should return the account", async () => {
 test("should update balance account", async () => {
   const expectedAccount = new Account(1, 10);
   const accountId = await accountRepository.save({ balance: 12 });
-  const account = await accountRepository.updateBalance(
+  const account = await accountRepository.updateAccount(
     new Account(accountId, 10)
   );
 
@@ -38,6 +38,24 @@ test("should throw error if does not find the account", async () => {
 
 test("should throw error if does not find the account to update", async () => {
   expect(
-    async () => await accountRepository.updateBalance(new Account(1, 1))
+    async () => await accountRepository.updateAccount(new Account(1, 1))
   ).rejects.toThrow(AccountNotFound);
+});
+
+test("shold throw error if something goes wrong updating account", async () => {
+  accountRepository.update = jest.fn(() => {
+    throw new Error("Something failed");
+  });
+  expect(
+    accountRepository.updateAccount(new Account(1, 10))
+  ).rejects.toThrowError("Internal repository error");
+});
+
+test("shold throw error if something goes wrong finding account", async () => {
+  accountRepository.findById = jest.fn(() => {
+    throw new Error("Something failed");
+  });
+  expect(accountRepository.findAccountById(1)).rejects.toThrowError(
+    "Internal repository error"
+  );
 });

@@ -8,6 +8,17 @@ module.exports = {
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest",
   },
+  coveragePathIgnorePatterns: ["lib"],
+  coverageThreshold: {
+    global: {
+        branches: 100,
+        functions: 100,
+        lines: 100,
+        statements: 100
+    }
+  },
   testMatch: ["**/test/**/*.test.(ts|js)"],
   testEnvironment: "node",
+  verbose: true,
+  collectCoverage: true
 };

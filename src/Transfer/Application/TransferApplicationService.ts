@@ -30,8 +30,8 @@ export class TransferApplicationService {
       amount,
     };
     TransferDomainService.applyTransfer(sender, beneficiary, amount);
-    await this._accountRepository.updateBalance(sender);
-    await this._accountRepository.updateBalance(beneficiary);
+    await this._accountRepository.updateAccount(sender);
+    await this._accountRepository.updateAccount(beneficiary);
     return this._transferRepository.saveTransfer(transfer);
   }
 

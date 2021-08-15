@@ -174,7 +174,7 @@ I will follow a hexagonal architecture in order to keep the code simple but stil
 - ***Repositories***
   - `IAccountRepository`
     - `findAccountById(accountId: number) : Promise<Account>`
-    - `updateBalance(accountId: number, newBalance: number) : Promise<Account>`
+    - `updateAccount(accountId: number, newBalance: number) : Promise<Account>`
   - `ITransferRepository`
     - `accountRepository: IAccountRepository`
     - `saveTransfer(senderId: number, beneficiaryId: number, amount: number) : Promise<Transfer>`
