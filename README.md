@@ -169,7 +169,7 @@ I will follow a hexagonal architecture in order to keep the code simple but stil
     - `beneficiaryId: number`
     - `senderId: number`
     - `amount: number`
-  - `TransferDomainService`
+  - `TransferApplier`
     - `applyTransfer(sender: Account, beneficiary: Account, amount: number): void`
 - ***Repositories***
   - `IAccountRepository`
@@ -187,14 +187,17 @@ I will follow a hexagonal architecture in order to keep the code simple but stil
 
 ## Application
 - ***Services***
-  - `TransferApplicationService`
+  - `TransferCreator`
     - `accountRepository: IAccountRepository`
     - `transferRepository: IAccountRepository`
     - `applyTransfer(senderId: number, beneficiaryId: number, amount: number) : void`
+  - `TransferList`
+    - `transferRepository: IAccountRepository`
     - `getTransfersHistory(accountId: number) : Transfer[]`
 
 ## Infrastructure
 - ***Controllers***
-  - `TransferController`
-    - `applyTransfer(req: HttpRequest, res: HttpResponse, next: method)`
-    - `getTransferHistory(req: HttpRequest, res: HttpResponse, next: method)`
+  - `CreateTransferController`
+    - `createTransfer(Omit<Transfer, "id"> transfer) : Transfer`
+  - `ListTransferController`
+    - `getTransferHistory(accountId: number) : Transfer[]`
