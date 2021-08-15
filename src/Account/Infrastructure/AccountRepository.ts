@@ -1,5 +1,6 @@
 import { EntityNotFound } from "../../../lib/EntityNotFound";
 import { InMemoryRepository } from "../../../lib/InMemoryRepository";
+import { ITransferRepository } from "../../Transfer/Domain/ITransferRepository";
 import { Account } from "../Domain/Account";
 import { AccountNotFound } from "../Domain/Exceptions/AccountNotFound";
 import { IAccountRepository } from "../Domain/IAccountRepository";
@@ -8,6 +9,21 @@ export class AccountRepository
   extends InMemoryRepository
   implements IAccountRepository
 {
+  private _transferRepository : ITransferRepository
+
+  constructor(transferRepository: ITransferRepository) {
+    super();
+    this._transferRepository = transferRepository
+  }
+  
+  async findAccountWithTransactionsById(accountId: number): Promise<Account> {
+    const account = await this.findAccountById(accountId)
+    const transfers = await this._transferRepository.getTransferHistory(accountId)
+    return Promise.resolve(
+      new Account(account.id, account.balance, transfers)
+    )
+  }
+
   async updateAccount(account: Account): Promise<Account> {
     const { id, balance } = account;
     try {

@@ -19,6 +19,5 @@ module.exports = {
   },
   testMatch: ["**/test/**/*.test.(ts|js)"],
   testEnvironment: "node",
-  verbose: true,
-  collectCoverage: true
+  verbose: true
 };

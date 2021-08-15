@@ -17,6 +17,7 @@ const AccountRepositoryMock = jest.fn<IAccountRepository, []>(() => ({
     throw new EntityNotFound("Entity does not exist");
   }),
   updateAccount: jest.fn(),
+  findAccountWithTransactionsById: jest.fn()
 }));
 
 const TransferRepositoryMock = jest.fn<

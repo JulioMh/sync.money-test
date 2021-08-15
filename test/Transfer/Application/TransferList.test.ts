@@ -2,23 +2,15 @@ import { IAccountRepository } from "../../../src/Account/Domain/IAccountReposito
 import { TransferList } from "../../../src/Transfer/Application/TransferList";
 import { ITransferRepository } from "../../../src/Transfer/Domain/ITransferRepository";
 
-const AccountRepositoryMock = jest.fn<IAccountRepository, []>(() => ({
-  findAccountById: jest.fn(),
-  updateAccount: jest.fn(),
-}));
-
 const TransferRepositoryMock = jest.fn<
   ITransferRepository,
-  [IAccountRepository]
+  []
 >(() => ({
   saveTransfer: jest.fn(),
   getTransferHistory: jest.fn(),
 }));
 
-const accountRepositoryMock = new AccountRepositoryMock();
-const transferRepositoryMock = new TransferRepositoryMock(
-  accountRepositoryMock
-);
+const transferRepositoryMock = new TransferRepositoryMock();
 
 const transferList = new TransferList(
   transferRepositoryMock

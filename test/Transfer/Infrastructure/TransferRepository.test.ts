@@ -17,20 +17,9 @@ const incomingTransfer = new Transfer(
   transferAmount
 )
 
-const AccountRepositoryMock = jest.fn<IAccountRepository, []>(() => ({
-  findAccountById: async (id): Promise<Account> => {
-    if (id === 1) return Promise.resolve(sender);
-    if (id === 2) return Promise.resolve(beneficiary);
-    throw new AccountNotFound("Entity does not exist");
-  },
-  updateAccount: jest.fn(),
-}));
-
-const accountRepositoryMock = new AccountRepositoryMock();
-
 beforeEach(() => {
   // This will wipe out data from previous test
-  transferRepository = new TransferRepository(accountRepositoryMock);
+  transferRepository = new TransferRepository();
 });
 
 test("should return list of transfer", async () => {
@@ -76,27 +65,6 @@ test("should save a transfer", async () => {
   const newTransfer = await transferRepository.saveTransfer(incomingTransfer);
 
   expect(newTransfer).toEqual(expectedTransfer);
-});
-
-test("should throw error if transfer participant does not exist", async () => {
-  expect(
-    async () =>
-      await transferRepository.saveTransfer(new Transfer(
-        undefined,
-        3,
-        beneficiary.id,
-        transferAmount
-      ))
-  ).rejects.toThrow(AccountNotFound);
-  expect(
-    async () =>
-      await transferRepository.saveTransfer(new Transfer(
-        undefined,
-        sender.id,
-        3,
-        transferAmount
-      ))
-  ).rejects.toThrow(AccountNotFound);
 });
 
 test("shold throw error if something goes wrong saving transfer data", async () => {
