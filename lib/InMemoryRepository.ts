@@ -29,7 +29,7 @@ export class InMemoryRepository {
       return [...allMatches, ...matches];
     }, []);
 
-    return items;
+    return Promise.resolve(items);
   }
 
   async save(item: any): Promise<number> {
