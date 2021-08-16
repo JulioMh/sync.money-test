@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { FOUND } from "http-status";
+import { OK } from "http-status";
 
-import { IAccountList } from "../../../src/Account/Application/AccountList";
-import { Account } from "../../../src/Account/Domain/Account";
-import { AccountGetController } from "../../../src/Account/Infrastructure/AccountGetController";
-import { Transfer } from "../../../src/Transfer/Domain/Transfer";
+import { IAccountList } from "../../../../src/context/Account/Application/AccountList";
+import { Account } from "../../../../src/context/Account/Domain/Account";
+import { AccountGetController } from "../../../../src/context/Account/Infrastructure/AccountGetController";
+import { Transfer } from "../../../../src/context/Transfer/Domain/Transfer";
 
 const account = new Account(1, 1, [new Transfer(1, 1, 2, 5)]);
 

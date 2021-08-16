@@ -1,5 +1,5 @@
-import { Account } from "../../../src/Account/Domain/Account";
-import { TransferApplier } from "../../../src/Transfer/Domain/TransferApplier";
+import { Account } from "../../../../src/context/Account/Domain/Account";
+import { TransferApplier } from "../../../../src/context/Transfer/Domain/TransferApplier";
 
 const sender = new Account(1, 10);
 const beneficiary = new Account(2, 10);

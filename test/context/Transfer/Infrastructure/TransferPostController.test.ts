@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { CREATED } from "http-status";
 
-import { ITransferCreator } from "../../../src/Transfer/Application/TransferCreator";
-import { Transfer } from "../../../src/Transfer/Domain/Transfer";
-import { TransferPostController } from "../../../src/Transfer/Infrastructure/TransferPostController";
+import { ITransferCreator } from "../../../../src/context/Transfer/Application/TransferCreator";
+import { Transfer } from "../../../../src/context/Transfer/Domain/Transfer";
+import { TransferPostController } from "../../../../src/context/Transfer/Infrastructure/TransferPostController";
 
 const newTransfer = new Transfer(1, 1, 2, 10);
 

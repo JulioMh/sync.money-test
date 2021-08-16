@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { CREATED } from "http-status";
 
-import { IController } from "../../http/IController";
+import { IController } from "../../../app/http/IController";
 import { ITransferCreator } from "../Application/TransferCreator";
 import { Transfer } from "../Domain/Transfer";
 

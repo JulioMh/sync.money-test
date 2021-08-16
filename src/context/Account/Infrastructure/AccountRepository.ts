@@ -1,5 +1,5 @@
-import { EntityNotFound } from "../../../lib/EntityNotFound";
-import { InMemoryRepository } from "../../../lib/InMemoryRepository";
+import { EntityNotFound } from "../../../../lib/EntityNotFound";
+import { InMemoryRepository } from "../../../../lib/InMemoryRepository";
 import { ITransferRepository } from "../../Transfer/Domain/ITransferRepository";
 import { Account } from "../Domain/Account";
 import { AccountNotFound } from "../Domain/Exceptions/AccountNotFound";

@@ -1,6 +1,6 @@
-import { Account } from "../../../src/Account/Domain/Account";
-import { Transfer } from "../../../src/Transfer/Domain/Transfer";
-import { TransferRepository } from "../../../src/Transfer/Infrastructure/TransferRepository";
+import { Account } from "../../../../src/context/Account/Domain/Account";
+import { Transfer } from "../../../../src/context/Transfer/Domain/Transfer";
+import { TransferRepository } from "../../../../src/context/Transfer/Infrastructure/TransferRepository";
 
 let transferRepository: TransferRepository;
 

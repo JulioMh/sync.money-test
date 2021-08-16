@@ -1,6 +1,6 @@
-import { Account } from "../../../src/Account/Domain/Account";
-import { InvalidAccountProperties } from "../../../src/Account/Domain/Exceptions/InvalidAccountProperties";
-import { NotEnoughBalance } from "../../../src/Account/Domain/Exceptions/NotEnoughBalance";
+import { Account } from "../../../../src/context/Account/Domain/Account";
+import { InvalidAccountProperties } from "../../../../src/context/Account/Domain/Exceptions/InvalidAccountProperties";
+import { NotEnoughBalance } from "../../../../src/context/Account/Domain/Exceptions/NotEnoughBalance";
 
 test("should not have negative balance", () => {
   expect(() => new Account(1, -1)).toThrow(InvalidAccountProperties);

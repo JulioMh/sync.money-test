@@ -1,4 +1,4 @@
-import { InMemoryRepository } from "../../../lib/InMemoryRepository";
+import { InMemoryRepository } from "../../../../lib/InMemoryRepository";
 import { ITransferRepository } from "../Domain/ITransferRepository";
 import { Transfer } from "../Domain/Transfer";
 

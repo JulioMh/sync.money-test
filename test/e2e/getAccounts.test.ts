@@ -1,5 +1,5 @@
-import { Server } from '../../src/http/Server'
-import { Container } from '../../src/Container'
+import { Server } from '../../src/app/http/Server'
+import { Container } from '../../src/app/Container'
 import request from 'supertest'
 import { NOT_FOUND, OK } from 'http-status'
 
@@ -20,15 +20,19 @@ afterAll(async () => {
 })
 
 describe("GET/accounts/:id", () => {
-  test("should find existing account", async () => {
-    const res = await request(server.httpServer).get("/accounts/1")
-    expect(res.statusCode).toEqual(OK)
-    expect(res.body).toEqual({ _id: 1, _balance: 200, _transfers: [{ _id: 1, _senderId: 1, _beneficiaryId: 2, _amount: 200 }, { _id: 2, _senderId: 2, _beneficiaryId: 1, _amount: 100 }]})
+  describe("200", () => {
+    test("should find existing account", async () => {
+      const res = await request(server.httpServer).get("/accounts/1")
+      expect(res.statusCode).toEqual(OK)
+      expect(res.body).toEqual({ _id: 1, _balance: 200, _transfers: [{ _id: 1, _senderId: 1, _beneficiaryId: 2, _amount: 200 }, { _id: 2, _senderId: 2, _beneficiaryId: 1, _amount: 100 }]})
+    })
   })
-
-  test("should send 404 if the account does not exstist", async () => {
-    const res = await request(server.httpServer).get("/accounts/3")
-    expect(res.statusCode).toEqual(NOT_FOUND)
-    expect(res.body).toEqual({ message: "Account ID: 3 was not found" })
+  
+  describe("404", () => {
+    test("should send 404 if the account does not exstist", async () => {
+      const res = await request(server.httpServer).get("/accounts/3")
+      expect(res.statusCode).toEqual(NOT_FOUND)
+      expect(res.body).toEqual({ message: "Account ID: 3 was not found" })
+    })
   })
 })

@@ -1,39 +1,29 @@
-import { EntityNotFound } from "../../../lib/EntityNotFound";
-import { Account } from "../../../src/Account/Domain/Account";
-import { IAccountRepository } from "../../../src/Account/Domain/IAccountRepository";
-import { TransferCreator } from "../../../src/Transfer/Application/TransferCreator";
-import { ITransferRepository } from "../../../src/Transfer/Domain/ITransferRepository";
-import { Transfer } from "../../../src/Transfer/Domain/Transfer";
-import { TransferApplier } from "../../../src/Transfer/Domain/TransferApplier";
+import { EntityNotFound } from "../../../../lib/EntityNotFound";
+import { Account } from "../../../../src/context/Account/Domain/Account";
+import { AccountRepository } from "../../../../src/context/Account/Infrastructure/AccountRepository";
+import { TransferCreator } from "../../../../src/context/Transfer/Application/TransferCreator";
+import { TransferRepository } from "../../../../src/context/Transfer/Infrastructure/TransferRepository";
+import { Transfer } from "../../../../src/context/Transfer/Domain/Transfer";
+import { TransferApplier } from "../../../../src/context/Transfer/Domain/TransferApplier";
 
 const sender = new Account(1, 10);
 const beneficiary = new Account(2, 10);
 const transferAmount = 5;
 
-const AccountRepositoryMock = jest.fn<IAccountRepository, []>(() => ({
+TransferApplier.applyTransfer = jest.fn(TransferApplier.applyTransfer);
+
+const accountRepositoryMock = {
   findAccountById: jest.fn(async (id): Promise<Account> => {
     if (id === 1) return Promise.resolve(sender);
     else if (id === 2) return Promise.resolve(beneficiary);
     throw new EntityNotFound("Entity does not exist");
   }),
-  updateAccount: jest.fn(),
-  findAccountWithTransactionsById: jest.fn(),
-}));
+  updateAccount: jest.fn()
+} as unknown as AccountRepository;
 
-const TransferRepositoryMock = jest.fn<
-  ITransferRepository,
-  [IAccountRepository]
->(() => ({
-  saveTransfer: jest.fn(),
-  getTransferHistory: jest.fn(),
-}));
-
-TransferApplier.applyTransfer = jest.fn(TransferApplier.applyTransfer);
-
-const accountRepositoryMock = new AccountRepositoryMock();
-const transferRepositoryMock = new TransferRepositoryMock(
-  accountRepositoryMock
-);
+const transferRepositoryMock = {
+  saveTransfer: jest.fn()
+} as unknown as TransferRepository;
 
 const transferCreator = new TransferCreator(
   transferRepositoryMock,

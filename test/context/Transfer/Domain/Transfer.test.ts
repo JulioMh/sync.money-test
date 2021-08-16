@@ -1,5 +1,5 @@
-import { InvalidTransferProperties } from "../../../src/Transfer/Domain/InvalidTransferProperties";
-import { Transfer } from "../../../src/Transfer/Domain/Transfer";
+import { InvalidTransferProperties } from "../../../../src/context/Transfer/Domain/InvalidTransferProperties";
+import { Transfer } from "../../../../src/context/Transfer/Domain/Transfer";
 
 const senderId = 1;
 const beneficiaryId = 2;

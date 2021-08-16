@@ -1,15 +1,15 @@
-import { AccountList, IAccountList } from "./Account/Application/AccountList";
-import { IAccountRepository } from "./Account/Domain/IAccountRepository";
-import { AccountGetController } from "./Account/Infrastructure/AccountGetController";
-import { AccountRepository } from "./Account/Infrastructure/AccountRepository";
+import { AccountList, IAccountList } from "../context/Account/Application/AccountList";
+import { IAccountRepository } from "../context/Account/Domain/IAccountRepository";
+import { AccountGetController } from "../context/Account/Infrastructure/AccountGetController";
+import { AccountRepository } from "../context/Account/Infrastructure/AccountRepository";
 import { IController } from "./http/IController";
 import {
   ITransferCreator,
   TransferCreator,
-} from "./Transfer/Application/TransferCreator";
-import { ITransferRepository } from "./Transfer/Domain/ITransferRepository";
-import { TransferPostController } from "./Transfer/Infrastructure/TransferPostController";
-import { TransferRepository } from "./Transfer/Infrastructure/TransferRepository";
+} from "../context/Transfer/Application/TransferCreator";
+import { ITransferRepository } from "../context/Transfer/Domain/ITransferRepository";
+import { TransferPostController } from "../context/Transfer/Infrastructure/TransferPostController";
+import { TransferRepository } from "../context/Transfer/Infrastructure/TransferRepository";
 
 // This class mimic a IoC Container
 export class Container {

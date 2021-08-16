@@ -1,5 +1,5 @@
-import { Server } from '../../src/http/Server'
-import { Container } from '../../src/Container'
+import { Server } from '../../src/app/http/Server'
+import { Container } from '../../src/app/Container'
 import request from 'supertest'
 import { NOT_FOUND, OK, CREATED, BAD_REQUEST } from 'http-status'
 
@@ -106,6 +106,18 @@ describe("POST/transfers", () => {
   
       expect(res.statusCode).toEqual(BAD_REQUEST)
       expect(res.body).toEqual({ message: "Transfer amount must be higher than 0" })
+    })
+
+    test.only("should return 400 if sender does not have enough balance", async () =>{
+      const transfer = {
+        senderId: 1,
+        beneficiaryId: 2,
+        amount: 10000
+      }
+      const res = await request(server.httpServer).post("/transfers").send(transfer)
+  
+      expect(res.statusCode).toEqual(BAD_REQUEST)
+      expect(res.body).toEqual({ message: "Account can not afford the expense" })
     })
   })
 })

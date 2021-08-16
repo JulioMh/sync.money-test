@@ -1,18 +1,18 @@
-import { Account } from "../../../src/Account/Domain/Account";
-import { AccountNotFound } from "../../../src/Account/Domain/Exceptions/AccountNotFound";
-import { AccountRepository } from "../../../src/Account/Infrastructure/AccountRepository";
-import { ITransferRepository } from "../../../src/Transfer/Domain/ITransferRepository";
-import { Transfer } from "../../../src/Transfer/Domain/Transfer";
+import { Account } from "../../../../src/context/Account/Domain/Account";
+import { AccountNotFound } from "../../../../src/context/Account/Domain/Exceptions/AccountNotFound";
+import { AccountRepository } from "../../../../src/context/Account/Infrastructure/AccountRepository";
+import { ITransferRepository } from "../../../../src/context/Transfer/Domain/ITransferRepository";
+import { Transfer } from "../../../../src/context/Transfer/Domain/Transfer";
+import { TransferRepository } from "../../../../src/context/Transfer/Infrastructure/TransferRepository";
 
 let accountRepository: AccountRepository;
 
 const transferHistory = [new Transfer(1, 1, 2, 6), new Transfer(2, 2, 1, 6)];
 
-const TransferRepositoryMock = jest.fn<ITransferRepository, []>(() => ({
+const transferRepositoryMock = {
   getTransferHistory: () => Promise.resolve(transferHistory),
   saveTransfer: jest.fn(),
-}));
-const transferRepositoryMock = new TransferRepositoryMock();
+} as unknown as ITransferRepository
 beforeEach(() => {
   // This will wipe out data from previous test
   accountRepository = new AccountRepository(transferRepositoryMock);
