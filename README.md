@@ -202,3 +202,16 @@ I will follow a hexagonal architecture in order to keep the code simple but stil
     - `run(req: Request, res: Response) : Promise<void>`
   - `AccountGetController`
     - `run(req: Request, res: Response) : Promise<void>`
+
+# Endpoints
+`GET/accounts/:id`: Returns the account information such current balance and transfers in which it is involved
+
+`POST/transfers`: Create a transfer between two accounts
+```
+body ->
+{
+  "accountId": 1,
+  "beneficiaryId": 2,
+  "amount": 10
+}
+```

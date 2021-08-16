@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
-import Router from "express-promise-router";
 import * as http from "http";
 import httpStatus from "http-status";
+import Router from 'express-promise-router'
 
 import { AccountNotFound } from "../../context/Account/Domain/Exceptions/AccountNotFound";
 import { InvalidAccountProperties } from "../../context/Account/Domain/Exceptions/InvalidAccountProperties";
@@ -25,6 +25,12 @@ export class Server {
   }
 
   private handleErrors(error: Error, req: Request, res: Response, next: any) {
+    console.log(`ERROR:\t${error.message}`)
+    console.log(`METHOD:\t${req.method}`)
+    console.log(`URL:\t${req.url}`)
+    console.log(`PARAMS:\t${JSON.stringify(req.params)}`)
+    console.log(`BODY:\t${JSON.stringify(req.body)}`)
+    console.log("------------------------------------------------------------------")
     const jsonResponse = { message: error.message };
     if (
       error instanceof InvalidTransferProperties ||
@@ -45,7 +51,11 @@ export class Server {
   }
 
   async listen(): Promise<http.Server | undefined> {
-    this._httpServer = this._express.listen(this._port);
+    this._httpServer = this._express.listen(this._port, () => {
+      console.log(`sync.money tech test API running at http://localhost:${this._port}`)
+      console.log(" Press CTRL-C to stop")
+      console.log("------------------------------------------------------------------")
+    });
     return this._httpServer;
   }
 
