@@ -12,7 +12,7 @@ const transferHistory = [new Transfer(1, 1, 2, 6), new Transfer(2, 2, 1, 6)];
 const transferRepositoryMock = {
   getTransferHistory: () => Promise.resolve(transferHistory),
   saveTransfer: jest.fn(),
-} as unknown as ITransferRepository
+} as unknown as ITransferRepository;
 beforeEach(() => {
   // This will wipe out data from previous test
   accountRepository = new AccountRepository(transferRepositoryMock);

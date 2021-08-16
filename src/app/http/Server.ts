@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import Router from "express-promise-router";
-import * as http from 'http';
+import * as http from "http";
 import httpStatus from "http-status";
 
 import { AccountNotFound } from "../../context/Account/Domain/Exceptions/AccountNotFound";
@@ -11,7 +11,7 @@ import { registerRoutes } from "./routes";
 
 export class Server {
   private _express: express.Express;
-  private _httpServer?: http.Server
+  private _httpServer?: http.Server;
   private _port: string;
 
   constructor(port: string) {
@@ -24,12 +24,7 @@ export class Server {
     this._express.use(this.handleErrors);
   }
 
-  private handleErrors(
-    error: Error,
-    req: Request,
-    res: Response,
-    next: any
-  ) {
+  private handleErrors(error: Error, req: Request, res: Response, next: any) {
     const jsonResponse = { message: error.message };
     if (
       error instanceof InvalidTransferProperties ||
@@ -45,18 +40,16 @@ export class Server {
     }
   }
 
-  
-  public get httpServer() : http.Server | undefined {
-    return this._httpServer
+  public get httpServer(): http.Server | undefined {
+    return this._httpServer;
   }
-  
 
-  async listen() : Promise<http.Server | undefined> {
+  async listen(): Promise<http.Server | undefined> {
     this._httpServer = this._express.listen(this._port);
-    return this._httpServer
+    return this._httpServer;
   }
 
   async stop() {
-    return this._httpServer?.close()
-  }  
+    return this._httpServer?.close();
+  }
 }

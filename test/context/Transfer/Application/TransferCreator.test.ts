@@ -2,9 +2,9 @@ import { EntityNotFound } from "../../../../lib/EntityNotFound";
 import { Account } from "../../../../src/context/Account/Domain/Account";
 import { AccountRepository } from "../../../../src/context/Account/Infrastructure/AccountRepository";
 import { TransferCreator } from "../../../../src/context/Transfer/Application/TransferCreator";
-import { TransferRepository } from "../../../../src/context/Transfer/Infrastructure/TransferRepository";
 import { Transfer } from "../../../../src/context/Transfer/Domain/Transfer";
 import { TransferApplier } from "../../../../src/context/Transfer/Domain/TransferApplier";
+import { TransferRepository } from "../../../../src/context/Transfer/Infrastructure/TransferRepository";
 
 const sender = new Account(1, 10);
 const beneficiary = new Account(2, 10);
@@ -18,11 +18,11 @@ const accountRepositoryMock = {
     else if (id === 2) return Promise.resolve(beneficiary);
     throw new EntityNotFound("Entity does not exist");
   }),
-  updateAccount: jest.fn()
+  updateAccount: jest.fn(),
 } as unknown as AccountRepository;
 
 const transferRepositoryMock = {
-  saveTransfer: jest.fn()
+  saveTransfer: jest.fn(),
 } as unknown as TransferRepository;
 
 const transferCreator = new TransferCreator(

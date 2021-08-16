@@ -1,8 +1,10 @@
-import { AccountList, IAccountList } from "../context/Account/Application/AccountList";
+import {
+  AccountList,
+  IAccountList,
+} from "../context/Account/Application/AccountList";
 import { IAccountRepository } from "../context/Account/Domain/IAccountRepository";
 import { AccountGetController } from "../context/Account/Infrastructure/AccountGetController";
 import { AccountRepository } from "../context/Account/Infrastructure/AccountRepository";
-import { IController } from "./http/IController";
 import {
   ITransferCreator,
   TransferCreator,
@@ -10,6 +12,7 @@ import {
 import { ITransferRepository } from "../context/Transfer/Domain/ITransferRepository";
 import { TransferPostController } from "../context/Transfer/Infrastructure/TransferPostController";
 import { TransferRepository } from "../context/Transfer/Infrastructure/TransferRepository";
+import { IController } from "./http/IController";
 
 // This class mimic a IoC Container
 export class Container {
