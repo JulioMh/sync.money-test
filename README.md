@@ -191,7 +191,7 @@ I will follow a hexagonal architecture in order to keep the code simple but stil
 - ***Services***
   - `TransferCreator`
     - `transferRepository: ITransferRepository`
-    - `applyTransfer(senderId: number, beneficiaryId: number, amount: number) : void`
+    - `createTransfer(senderId: number, beneficiaryId: number, amount: number) : void`
   - `AccountList`
     - `accountRepository: IAccountRepository`
     - `findAccount(accountId: number) : Transfer[]`
