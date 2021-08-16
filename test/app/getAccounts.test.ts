@@ -11,7 +11,7 @@ beforeAll(async () => {
   container.transferRepository.save({ senderId: 1, beneficiaryId: 2, amount: 200 });
   container.transferRepository.save({ senderId: 2, beneficiaryId: 1, amount: 100 });
 
-  server = new Server("8000")
+  server = new Server("8080")
   await server.listen()
 })
 

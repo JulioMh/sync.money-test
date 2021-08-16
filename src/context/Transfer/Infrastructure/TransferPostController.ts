@@ -23,9 +23,9 @@ export class TransferPostController implements IController {
       beneficiaryId,
       amount
     );
-    const createdTransder = await this._transferCreator.createTransfer(
+    const createdTransfer = await this._transferCreator.createTransfer(
       transfer
     );
-    res.status(CREATED).send(createdTransder);
+    res.status(CREATED).send(createdTransfer);
   }
 }

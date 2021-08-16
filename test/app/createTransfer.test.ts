@@ -1,7 +1,7 @@
 import { Server } from '../../src/app/http/Server'
 import { Container } from '../../src/app/Container'
 import request from 'supertest'
-import { NOT_FOUND, OK, CREATED, BAD_REQUEST } from 'http-status'
+import { NOT_FOUND, OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR } from 'http-status'
 
 let server: Server
 beforeAll(async () => {
@@ -108,7 +108,7 @@ describe("POST/transfers", () => {
       expect(res.body).toEqual({ message: "Transfer amount must be higher than 0" })
     })
 
-    test.only("should return 400 if sender does not have enough balance", async () =>{
+    test("should return 400 if sender does not have enough balance", async () =>{
       const transfer = {
         senderId: 1,
         beneficiaryId: 2,

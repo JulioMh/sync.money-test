@@ -8,7 +8,7 @@ module.exports = {
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest",
   },
-  coveragePathIgnorePatterns: ["lib"],
+  coveragePathIgnorePatterns: ["lib", "src/app"],
   coverageThreshold: {
     global: {
         branches: 100,
