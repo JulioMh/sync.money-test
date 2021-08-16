@@ -29,6 +29,6 @@ test("should call to get account use case", async () => {
 
   await accountGetController.run(requestMock, responseMock);
   expect(accountListMock.findAccount).toHaveBeenCalledWith(account.id);
-  expect(responseMock.status).toHaveBeenCalledWith(FOUND);
+  expect(responseMock.status).toHaveBeenCalledWith(OK);
   expect(responseMock.send).toHaveBeenCalledWith(account);
 });
