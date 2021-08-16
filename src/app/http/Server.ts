@@ -28,7 +28,6 @@ export class Server {
     console.log(`ERROR:\t${error.message}`)
     console.log(`METHOD:\t${req.method}`)
     console.log(`URL:\t${req.url}`)
-    console.log(`PARAMS:\t${JSON.stringify(req.params)}`)
     console.log(`BODY:\t${JSON.stringify(req.body)}`)
     console.log("------------------------------------------------------------------")
     const jsonResponse = { message: error.message };
